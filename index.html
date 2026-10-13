@@ -1,0 +1,597 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>TripTales India</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: phone-first app shell. Sticky top bar, one view at a time, fixed bottom tab bar.
+   Navy and orange taken from the TripTales India logo. */
+:root{
+  --bg:#F3F9FD;
+  --surface:#FFFFFF;
+  --surface-2:#E0F1F9;
+  --navy:#043164;
+  --fg:#052B57;
+  --muted:#4A6384;
+  --line:#CDE3EE;
+  --orange:#F58309;
+  --sun:#FDC030;
+  --blue:#1C7FD0;
+  --accent-ink:#B04F00;
+  --on-orange:#043164;
+  --hero-bg:#043164;
+  --hero-bg2:#0B5CA8;
+  --hero-fg:#FFFFFF;
+  --hero-muted:#C3DAF0;
+  --bar-bg:#FFFFFF;
+  --font-display:'Bricolage Grotesque','Trebuchet MS',system-ui,sans-serif;
+  --font-body:'Figtree',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#04152E;--surface:#0A2550;--surface-2:#103466;--fg:#EAF4FF;--muted:#A7BFDD;--line:#1B4780;
+    --accent-ink:#FFA23D;--hero-bg:#043164;--bar-bg:#061D42;color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#04152E;--surface:#0A2550;--surface-2:#103466;--fg:#EAF4FF;--muted:#A7BFDD;--line:#1B4780;
+  --accent-ink:#FFA23D;--hero-bg:#043164;--bar-bg:#061D42;color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:16px;line-height:1.5;padding-inline:16px;padding-block:0 84px}
+h1,h2,h3{font-family:var(--font-display);margin:0;text-wrap:balance;line-height:1.1}
+p{margin:0}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.wrap{max-width:560px;margin-inline:auto}
+
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:12px;margin-inline:-16px;padding-inline:16px}
+.top::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--sun),var(--orange))}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand img{flex:none;height:40px;width:auto}
+.w1{color:var(--fg)}.w2{color:var(--orange)}
+.brand b{font-family:var(--font-display);font-weight:800;font-size:1.15rem;letter-spacing:-.01em;display:block;line-height:1}
+.brand small{display:block;color:var(--muted);font-size:.72rem;margin-top:3px}
+.callmini{flex:none;display:inline-flex;align-items:center;gap:8px;background:var(--orange);color:var(--on-orange);text-decoration:none;font-weight:700;border-radius:999px;padding:9px 14px;font-size:.9rem}
+
+/* logo + banner */
+.logocard{background:#FFFFFF;border:1px solid var(--line);border-radius:22px;display:flex;justify-content:center;padding:10px}
+.logocard img{display:block;width:100%;max-width:320px;height:auto}
+.banner{background:var(--orange);color:var(--on-orange);border-radius:18px;padding:18px 20px;display:flex;flex-direction:column;gap:4px}
+.banner b{font-family:var(--font-display);font-weight:800;font-size:1.35rem;line-height:1.15}
+.banner span{font-weight:600}
+
+/* views */
+.view{display:none;padding-block:20px 8px}
+.view.on{display:block}
+.stack{display:flex;flex-direction:column;gap:22px}
+
+/* hero */
+.hero{background:linear-gradient(160deg,var(--hero-bg),var(--hero-bg2));color:var(--hero-fg);border-radius:22px;overflow:hidden}
+.photo{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;object-position:center 65%;border-radius:18px;margin-bottom:12px;background:var(--surface-2)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-inline:-16px;padding-inline:16px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 14px;font-weight:600;font-size:.88rem;cursor:pointer;min-height:40px}
+.chip[aria-pressed="true"]{background:var(--navy);color:#fff;border-color:var(--navy)}
+:root[data-theme="dark"] .chip[aria-pressed="true"]{background:var(--orange);color:var(--on-orange);border-color:var(--orange)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .chip[aria-pressed="true"]{background:var(--orange);color:var(--on-orange);border-color:var(--orange)}}
+.dest{gap:10px;overflow:hidden}
+.dest .art{margin:-16px -16px 2px;aspect-ratio:2/1;background:var(--surface-2)}
+.dest .art svg{display:block;width:100%;height:100%}
+.dest .art img{display:block;width:100%;height:100%;object-fit:cover}
+.dest .top2{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.dest .state{font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink)}
+.dest .days{font-size:.82rem;font-weight:700;background:var(--surface-2);border-radius:999px;padding:3px 10px;white-space:nowrap}
+.dest h3{font-size:1.3rem;font-weight:800;letter-spacing:-.01em}
+.dest .tags{display:flex;flex-wrap:wrap;gap:6px}
+.dest .tags span{font-size:.8rem;border:1px solid var(--line);border-radius:999px;padding:3px 10px;color:var(--muted)}
+.dest .btn{margin-top:0}
+.dest .desc{color:var(--muted);font-size:.93rem}
+.foot{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:auto;padding-top:4px}
+.price{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
+.price b{font-family:var(--font-display);font-size:1.5rem;font-weight:800;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.price small{color:var(--muted);font-size:.8rem;font-weight:600}
+.pack .price{margin-top:2px}
+.hero-body{padding:22px 20px;display:flex;flex-direction:column;gap:14px}
+.eyebrow{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--hero-muted);font-weight:600}
+.hero h1{font-size:2.15rem;font-weight:800;letter-spacing:-.02em}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.hero p{color:var(--hero-muted)}
+.cta{display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:14px;padding:13px 18px;font-weight:700;text-decoration:none;border:2px solid transparent;cursor:pointer;min-height:48px;background:none}
+.btn.primary{background:var(--orange);color:var(--on-orange)}
+.btn.ghost{border-color:currentColor}
+.hero .btn.ghost{color:var(--hero-fg)}
+.btn.line{border-color:var(--line);background:var(--surface)}
+
+/* sections */
+.sec-h{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.sec-h h2{font-size:1.45rem;font-weight:800;letter-spacing:-.01em}
+.sec-h p{color:var(--muted);font-size:.95rem}
+.label{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-ink);font-weight:700}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.card h3{font-size:1.15rem;font-weight:700}
+.card p{color:var(--muted);font-size:.95rem}
+.ico{width:48px;height:48px;border-radius:50%;display:grid;place-items:center}
+.ico.navy{background:var(--navy);color:#fff}
+.ico.orange{background:var(--orange);color:var(--on-orange)}
+
+.pill-row{display:flex;flex-wrap:wrap;gap:8px}
+.pill{background:var(--surface-2);border-radius:999px;padding:6px 12px;font-size:.85rem;font-weight:600}
+
+.pack{border-left:6px solid var(--orange)}
+.pack .dur{font-family:var(--font-display);font-weight:800;font-size:1.5rem;letter-spacing:-.01em}
+.pack .for{font-size:.82rem;color:var(--accent-ink);font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.pack .btn{margin-top:6px}
+
+.why{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.why li{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px}
+.why svg{flex:none;color:var(--accent-ink);margin-top:2px}
+.why b{display:block}
+.why span{color:var(--muted);font-size:.93rem}
+
+.contact{background:var(--navy);color:#fff;border-radius:22px;padding:20px;display:flex;flex-direction:column;gap:12px}
+.contact .label{color:#FFB366}
+.num{font-family:var(--font-display);font-weight:800;font-size:2rem;letter-spacing:.02em;font-variant-numeric:tabular-nums;user-select:all;-webkit-user-select:all}
+.contact p{color:#C4D0E8;font-size:.93rem}
+.contact .btn.ghost{color:#fff}
+.tagline{text-align:center;color:var(--muted);font-family:var(--font-display);font-weight:600;padding-block:6px}
+
+/* form */
+form{display:flex;flex-direction:column;gap:14px}
+.f{display:flex;flex-direction:column;gap:6px}
+.f label{font-weight:600;font-size:.9rem}
+.f input,.f select{background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:12px;min-height:48px;width:100%}
+.note{font-size:.88rem;color:var(--muted)}
+.status{font-size:.9rem;color:var(--accent-ink);font-weight:600;min-height:1.3em}
+
+/* bottom tabs */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--bar-bg);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px))}
+.tab{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:0;padding:8px 4px;border-radius:12px;color:var(--muted);font-size:.74rem;font-weight:600;cursor:pointer;min-height:54px}
+.tab[aria-current="page"]{color:var(--accent-ink);background:var(--surface-2)}
+@media (prefers-reduced-motion:no-preference){.view.on{animation:in .25s ease-out}@keyframes in{from{opacity:.4;transform:translateY(6px)}to{opacity:1;transform:none}}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <img src="emblem.png" width="460" height="299" alt="">
+      <div><b><span class="w1">Trip</span><span class="w2">Tales</span><span class="w1"> India</span></b></div>
+    </div>
+    <a class="callmini" href="tel:8367329302" aria-label="Call 8367329302">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+      Call
+    </a>
+  </header>
+
+  <!-- HOME -->
+  <main>
+  <section class="view on stack" id="v-home" data-view="home">
+    <div class="logocard"><img src="logo.jpg" width="900" height="711" alt="TripTales India logo. Where every journey becomes a tale."></div>
+
+    <div class="hero">
+      <div class="hero-body">
+        <span class="eyebrow">Nature | Culture | Adventure</span>
+        <h1>Where every journey becomes a <em>tale.</em></h1>
+        <p>Explore Araku Valley, a perfect getaway from the ordinary.</p>
+        <div class="cta">
+          <a class="btn primary" href="tel:8367329302">Call 8367329302</a>
+          <button class="btn ghost" type="button" data-go="book">Plan my trip</button>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <img class="photo" src="waterfall.jpg" width="765" height="401" loading="lazy" alt="Waterfalls pouring down green, mist-covered hills">
+      <div class="sec-h"><span class="label">Featured destination</span><h2>Special Araku Valley Packages</h2><p>Explore Araku Valley, a perfect getaway from the ordinary.</p></div>
+      <div class="pill-row"><span class="pill">1 Day Trip</span><span class="pill">2 Days 1 Night</span><span class="pill">3 Days 2 Nights</span><span class="pill">Family</span><span class="pill">Couple</span><span class="pill">Group</span><span class="pill">Budget friendly</span></div>
+      <div class="cta" style="margin-top:14px"><button class="btn line" type="button" data-go="packages">See all packages</button></div>
+    </div>
+
+    <div>
+      <div class="sec-h"><span class="label">Why choose us</span><h2>Why choose TripTales India?</h2></div>
+      <ul class="why">
+        <li><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><div><b>Customized itineraries</b><span>For every traveller.</span></div></li>
+        <li><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><div><b>Best prices and no hidden costs</b><span>Clear pricing before you book.</span></div></li>
+        <li><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><div><b>Local experiences and expert guides</b><span>See the place the way locals do.</span></div></li>
+        <li><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><div><b>24/7 travel support</b><span>Help is a call away during your trip.</span></div></li>
+        <li><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><div><b>Memorable and safe journeys</b><span>Create memories, not just trips.</span></div></li>
+      </ul>
+    </div>
+
+    <div class="contact">
+      <span class="label">Book your trip today!</span>
+      <div class="num">8367329302</div>
+      <p>Call or message to book a package or ask about a destination.</p>
+      <div class="cta">
+        <a class="btn primary" href="tel:8367329302">Call now</a>
+        <a class="btn ghost" href="https://wa.me/918367329302" target="_blank" rel="noopener">WhatsApp</a>
+        <button class="btn ghost" type="button" data-copy="8367329302">Copy number</button>
+      </div>
+      <div class="status" role="status" data-copystatus></div>
+    </div>
+    <p class="tagline">TripTales India · Where every journey becomes a tale.</p>
+  </section>
+
+  <!-- PACKAGES -->
+  <section class="view stack" id="v-packages" data-view="packages">
+    <div class="sec-h"><span class="label">Araku Valley</span><h2>Choose your length of stay</h2><p>Each package works for families, couples and groups. Prices are starting prices per person and change with season and group size. Call 8367329302 to confirm.</p></div>
+    <div class="grid">
+      <article class="card pack"><span class="for">Quick getaway</span><span class="dur">1 Day Trip</span><p>Go and return in a day. A good fit when time is short.</p><div class="price"><small>From</small><b>₹1,500</b><small>per person</small></div><button class="btn primary" type="button" data-book="1 Day Trip">Enquire</button></article>
+      <article class="card pack"><span class="for">Weekend break</span><span class="dur">2 Days 1 Night</span><p>One night in the valley with time to slow down.</p><div class="price"><small>From</small><b>₹3,500</b><small>per person</small></div><button class="btn primary" type="button" data-book="2 Days 1 Night">Enquire</button></article>
+      <article class="card pack"><span class="for">Full holiday</span><span class="dur">3 Days 2 Nights</span><p>Two nights, an unhurried pace and room to see more.</p><div class="price"><small>From</small><b>₹5,500</b><small>per person</small></div><button class="btn primary" type="button" data-book="3 Days 2 Nights">Enquire</button></article>
+    </div>
+    <div class="card">
+      <h3>Who travels with us</h3>
+      <div class="pill-row"><span class="pill">Family</span><span class="pill">Couple</span><span class="pill">Group</span><span class="pill">Budget friendly</span></div>
+    </div>
+    <div class="card">
+      <h3>Popular stops around Araku</h3>
+      <p>Borra Caves, Katiki Waterfalls, coffee plantations, the Tribal Museum and Padmapuram Gardens are well-known places to visit in the area. Tell us what you want to see and we will plan around it.</p>
+    </div>
+
+    <div class="sec-h" style="margin-top:10px"><span class="label">Across India</span><h2>Popular destinations</h2><p>Pick a category. Prices are starting prices per person and change with season, group size and availability. Call 8367329302 to confirm.</p></div>
+    <div class="chips" id="chips" role="group" aria-label="Filter destinations"></div>
+    <div class="grid" id="dest" aria-live="polite"></div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="view stack" id="v-services" data-view="services">
+    <div class="sec-h"><span class="label">What we do</span><h2>Our Services</h2><p>One number for the whole trip.</p></div>
+    <div class="grid">
+      <article class="card"><div class="ico navy"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="8" width="14" height="12" rx="2"/><path d="M9 8V6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M12 12v2"/></svg></div><h3>Tour Packages</h3><p>Pre-planned and customized trips.</p></article>
+      <article class="card"><div class="ico orange"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18V7M3 14h18v4M21 14v-2a3 3 0 0 0-3-3h-7v5"/><circle cx="7" cy="11" r="1.5"/></svg></div><h3>Hotel Booking</h3><p>Comfortable stays in top-rated hotels and resorts.</p></article>
+      <article class="card"><div class="ico navy"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16v-4l2-5h12l2 5v4M4 16h16M4 16v2m16-2v2"/><circle cx="8" cy="14" r="1"/><circle cx="16" cy="14" r="1"/></svg></div><h3>Cab &amp; Local Transport</h3><p>Safe and reliable travel options.</p></article>
+      <article class="card"><div class="ico orange"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 13 18-8-6 15-3-6z"/></svg></div><h3>Flight &amp; Train Booking</h3><p>Hassle-free travel arrangements.</p></article>
+      <article class="card"><div class="ico navy"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2zM9 4v14M15 6v14"/></svg></div><h3>Travel Planning &amp; Consultation</h3><p>Personalized itineraries and expert guidance.</p></article>
+    </div>
+    <div class="banner"><b>Create Memories, Not Just Trips!</b><span>Let's explore together.</span></div>
+    <div class="pill-row"><span class="pill">Nature</span><span class="pill">Adventure</span><span class="pill">Culture</span><span class="pill">Memories</span></div>
+  </section>
+
+  <!-- BOOK -->
+  <section class="view stack" id="v-book" data-view="book">
+    <div class="sec-h"><span class="label">Plan my trip</span><h2>Tell us what you need</h2><p>Fill this in and we open WhatsApp with your message ready to send.</p></div>
+    <form id="bookform" novalidate>
+      <div class="f"><label for="name">Your name</label><input id="name" autocomplete="name" placeholder="Name"></div>
+      <div class="f"><label for="pkg">Package</label>
+        <select id="pkg"><option>Araku Valley: 1 Day Trip</option><option>Araku Valley: 2 Days 1 Night</option><option>Araku Valley: 3 Days 2 Nights</option><option>Other destination or custom plan</option></select></div>
+      <div class="f"><label for="who">Travelling as</label>
+        <select id="who"><option>Family</option><option>Couple</option><option>Group</option></select></div>
+      <div class="f"><label for="ppl">Number of travellers</label><input id="ppl" type="number" inputmode="numeric" min="1" max="100" placeholder="e.g. 4"></div>
+      <div class="f"><label for="date">Preferred travel date</label><input id="date" type="date"></div>
+      <a class="btn primary" id="wa" href="https://wa.me/918367329302" target="_blank" rel="noopener">Open WhatsApp with my details</a>
+      <p class="note">Opening WhatsApp does not send anything until you press send there.</p>
+    </form>
+    <div class="contact">
+      <span class="label">Prefer to talk?</span>
+      <div class="num">8367329302</div>
+      <div class="cta">
+        <a class="btn primary" href="tel:8367329302">Call now</a>
+        <button class="btn ghost" type="button" data-copy="8367329302">Copy number</button>
+      </div>
+      <div class="status" role="status" data-copystatus></div>
+    </div>
+  </section>
+  </main>
+</div>
+
+<nav class="tabs" aria-label="Main">
+  <button class="tab" type="button" data-go="home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11 12 4l8 7v9H4z"/></svg>Home</button>
+  <button class="tab" type="button" data-go="packages"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20 9 8l4 7 3-4 5 9z"/></svg>Packages</button>
+  <button class="tab" type="button" data-go="services"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg>Services</button>
+  <button class="tab" type="button" data-go="book"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4m8-4v4M4 10h16"/></svg>Book</button>
+</nav>
+
+<script>
+(function(){
+  var PHONE='8367329302', WA='918367329302';
+  var views=['home','packages','services','book'];
+  function show(v){
+    if(views.indexOf(v)<0) v='home';
+    views.forEach(function(n){var el=document.getElementById('v-'+n); if(el) el.classList.toggle('on',n===v);});
+    document.querySelectorAll('.tab').forEach(function(t){
+      if(t.getAttribute('data-go')===v) t.setAttribute('aria-current','page'); else t.removeAttribute('aria-current');
+    });
+    try{ if(location.hash!=='#'+v) history.replaceState(null,'','#'+v); }catch(e){}
+    window.scrollTo(0,0);
+  }
+  document.addEventListener('click',function(e){
+    var g=e.target.closest('[data-go]'); if(g){ show(g.getAttribute('data-go')); return; }
+    var b=e.target.closest('[data-book]');
+    if(b){
+      var want='Araku Valley: '+b.getAttribute('data-book'), sel=document.getElementById('pkg');
+      for(var i=0;i<sel.options.length;i++){ if(sel.options[i].text===want) sel.selectedIndex=i; }
+      show('book'); updateWA(); return;
+    }
+    var c=e.target.closest('[data-copy]');
+    if(c){
+      var txt=c.getAttribute('data-copy');
+      var done=function(ok){
+        document.querySelectorAll('[data-copystatus]').forEach(function(s){
+          s.textContent=ok?'Number copied: '+txt:'Press and hold the number to copy it.';
+        });
+      };
+      try{
+        navigator.clipboard.writeText(txt).then(function(){done(true)},function(){selectNum(c);done(false)});
+      }catch(err){ selectNum(c); done(false); }
+    }
+  });
+  function selectNum(btn){
+    var n=btn.closest('.contact').querySelector('.num');
+    try{ var r=document.createRange(); r.selectNodeContents(n); var s=getSelection(); s.removeAllRanges(); s.addRange(r); }catch(e){}
+  }
+  function updateWA(){
+    var name=document.getElementById('name').value.trim();
+    var pkg=document.getElementById('pkg').value;
+    var who=document.getElementById('who').value;
+    var ppl=document.getElementById('ppl').value.trim();
+    var date=document.getElementById('date').value;
+    var msg='Hello TripTales India, I would like to enquire about a trip.\n'
+      +(name?'Name: '+name+'\n':'')
+      +'Package: '+pkg+'\nTravelling as: '+who+'\n'
+      +(ppl?'Travellers: '+ppl+'\n':'')
+      +(date?'Preferred date: '+date+'\n':'');
+    document.getElementById('wa').href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
+  }
+  /* Original destination illustrations (320x160 scenes, drawn as SVG) */
+  var ART=(function(){
+    function R(x,y,w,h,c,rx,o){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+c+'"'+(rx?' rx="'+rx+'"':'')+(o?' opacity="'+o+'"':'')+'/>';}
+    function C(x,y,r,c,o){return '<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="'+c+'"'+(o?' opacity="'+o+'"':'')+'/>';}
+    function E(x,y,rx,ry,c,o){return '<ellipse cx="'+x+'" cy="'+y+'" rx="'+rx+'" ry="'+ry+'" fill="'+c+'"'+(o?' opacity="'+o+'"':'')+'/>';}
+    function P(pts,c,o){return '<polygon points="'+pts+'" fill="'+c+'"'+(o?' opacity="'+o+'"':'')+'/>';}
+    function D(d,c,o){return '<path d="'+d+'" fill="'+c+'"'+(o?' opacity="'+o+'"':'')+'/>';}
+    function L(d,c,w,o){return '<path d="'+d+'" fill="none" stroke="'+c+'" stroke-width="'+w+'" stroke-linecap="round" stroke-linejoin="round"'+(o?' opacity="'+o+'"':'')+'/>';}
+    function sky(id,a,b){return '<defs><linearGradient id="'+id+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+a+'"/><stop offset="1" stop-color="'+b+'"/></linearGradient></defs><rect width="320" height="160" fill="url(#'+id+')"/>';}
+    function mtn(base,pts,c,o){var p='0,'+base;for(var i=0;i<pts.length;i+=2)p+=' '+pts[i]+','+pts[i+1];return P(p+' 320,'+base+' 320,160 0,160',c,o);}
+    function cap(x,y,w,h){return P(x+','+y+' '+(x-w)+','+(y+h)+' '+(x-w*0.4)+','+(y+h*0.72)+' '+x+','+(y+h)+' '+(x+w*0.45)+','+(y+h*0.72)+' '+(x+w)+','+(y+h),'#FFFFFF',0.95);}
+    function pine(x,y,s,c){return P(x+','+(y-34*s)+' '+(x-10*s)+','+(y-14*s)+' '+(x+10*s)+','+(y-14*s),c)+P(x+','+(y-22*s)+' '+(x-13*s)+','+y+' '+(x+13*s)+','+y,c)+R(x-1.5*s,y,3*s,5*s,'#5A3A22');}
+    function palm(x,y,h,lc){
+      var tx=x+h*0.12,ty=y-h,o=L('M'+x+' '+y+' Q'+(x+h*0.05)+' '+(y-h*0.5)+' '+tx+' '+ty,'#6B4A2B',2.6);
+      var f=[[-26,10],[-16,-2],[0,-8],[16,-2],[26,10]];
+      for(var i=0;i<f.length;i++)o+=L('M'+tx+' '+ty+' Q'+(tx+f[i][0]*0.5)+' '+(ty-9+f[i][1]*0.2)+' '+(tx+f[i][0])+' '+(ty+f[i][1]),lc||'#2E8B3E',3.2);
+      return o+C(tx,ty+2,2.4,'#6B4A2B');
+    }
+    function tree(x,y,h,c){return L('M'+x+' '+y+' L'+x+' '+(y-h),'#6B4A2B',2)+E(x,y-h,6,h*0.34,c||'#2E7D32');}
+    function dome(x,y,w,h,c){return D('M'+(x-w)+' '+y+' Q'+(x-w)+' '+(y-h*0.9)+' '+x+' '+(y-h)+' Q'+(x+w)+' '+(y-h*0.9)+' '+(x+w)+' '+y+'Z',c);}
+    function arch(x,y,w,h,c){return D('M'+x+' '+y+' L'+x+' '+(y-h+w/2)+' Q'+x+' '+(y-h)+' '+(x+w/2)+' '+(y-h)+' Q'+(x+w)+' '+(y-h)+' '+(x+w)+' '+(y-h+w/2)+' L'+(x+w)+' '+y+'Z',c);}
+    function ripples(y,c,n){var o='';for(var i=0;i<n;i++){var x=(i*53+17)%280+10;o+=L('M'+x+' '+(y+(i*11)%26)+' q6 -3 12 0 t12 0',c,1.5,0.6);}return o;}
+
+    var S={};
+    S.manali=function(id){
+      var o=sky(id,'#7FC4EE','#E9F6FD')+C(255,36,13,'#FFF3C4',0.95);
+      o+=mtn(112,[40,62,90,96,140,32,200,100,250,50,300,92],'#8AAAD8')+cap(140,32,17,28)+cap(250,50,15,24)+cap(40,62,12,18);
+      o+=mtn(128,[60,92,120,72,180,116,230,82,290,114],'#5C86BE')+cap(120,72,13,18)+cap(230,82,12,16);
+      o+=R(0,128,320,32,'#F6FBFF');
+      o+=pine(28,142,1,'#1F6B45')+pine(60,150,1.25,'#1B5E3C')+pine(98,152,0.8,'#1F6B45')+pine(222,152,0.95,'#1F6B45')+pine(254,144,1.1,'#1B5E3C')+pine(288,152,1.3,'#1F6B45');
+      return o;};
+    S.darjeeling=function(id){
+      var o=sky(id,'#BFE0F5','#F6EBDA');
+      o+=mtn(104,[50,74,105,46,160,28,215,50,270,76],'#B9CDEB')+cap(160,28,26,34)+cap(105,46,16,20)+cap(215,50,16,22);
+      o+=D('M0 160 L0 104 Q80 80 160 100 T320 94 L320 160Z','#4C9A4A');
+      for(var i=0;i<5;i++)o+=L('M0 '+(112+i*9)+' Q80 '+(95+i*9)+' 160 '+(110+i*9)+' T320 '+(105+i*9),'#2F7D3A',2.2,0.9);
+      o+=L('M0 154 L320 154','#555',2)+R(70,140,24,11,'#1C6FD0',2)+R(96,141,24,10,'#1C6FD0',2)+R(122,141,24,10,'#F58309',2)+R(74,143,5,4,'#CFE8FA')+R(100,143,5,4,'#CFE8FA')+R(126,143,5,4,'#CFE8FA');
+      return o;};
+    S.ooty=function(id){
+      var o=sky(id,'#CDEBF7','#F0F8F2');
+      o+=D('M0 100 Q60 70 130 95 T260 80 T320 95 L320 160 L0 160Z','#86BF82')+E(90,100,80,8,'#fff',0.55);
+      o+=D('M0 118 Q70 92 150 112 T320 105 L320 160 L0 160Z','#4F9A56')+E(240,98,70,7,'#fff',0.5);
+      o+=D('M0 138 Q90 118 170 134 T320 128 L320 160 L0 160Z','#2F7D3F');
+      o+=tree(40,148,44,'#2A7A3A')+tree(70,152,34,'#2F8A42')+tree(255,150,46,'#2A7A3A')+tree(285,154,34,'#2F8A42');
+      return o;};
+    S.munnar=function(id){
+      var o=sky(id,'#BFE4F5','#EAF7E8')+C(262,34,16,'#FFE08A');
+      o+=D('M0 96 Q80 60 160 86 T320 70 L320 160 L0 160Z','#6FB27A');
+      o+=D('M0 160 L0 106 Q100 80 200 100 T320 96 L320 160Z','#3F9A4C');
+      for(var i=0;i<7;i++)o+=L('M0 '+(112+i*7)+' Q100 '+(88+i*7)+' 200 '+(108+i*7)+' T320 '+(103+i*7),'#2A7D3A',2,0.8);
+      o+=L('M120 160 Q150 132 190 122 T250 102','#EBDDB8',4)+E(52,150,40,8,'#6CC5E6');
+      return o;};
+    S.kashmir=function(id){
+      var o=sky(id,'#9CD3F0','#F3F9FC');
+      o+=mtn(96,[40,58,100,80,150,30,210,70,270,40,310,74],'#9DB7DE')+cap(150,30,22,30)+cap(270,40,16,22)+cap(40,58,12,16);
+      o+=mtn(112,[30,100,70,110,120,94,170,108,230,96,290,108],'#2E6B4A');
+      o+=R(0,112,320,48,'#4FB6D8')+L('M20 126 L90 126','#fff',1.5,0.5)+L('M200 124 L270 124','#fff',1.5,0.5)+L('M120 150 L190 150','#fff',1.5,0.4);
+      o+=C(40,106,17,'#E4572E')+R(38,116,4,12,'#5A3A22')+C(288,104,19,'#F58309')+R(286,114,4,14,'#5A3A22');
+      o+=D('M112 138 Q160 152 218 138 L208 146 Q160 154 124 146Z','#F58309')+R(148,124,40,12,'#FDC030',3)+L('M150 124 L150 136','#C77B05',1.5)+L('M186 124 L186 136','#C77B05',1.5)+L('M222 132 L242 148','#6B4A2B',2);
+      return o;};
+    S.ladakh=function(id){
+      var o=sky(id,'#7DC1EA','#E5F2F9');
+      o+=mtn(104,[30,62,80,86,130,46,190,92,250,56,300,86],'#C99A6C')+P('130,46 110,104 150,104','#A9794F',0.45)+P('250,56 228,104 268,104','#A9794F',0.45);
+      o+=mtn(124,[50,102,110,80,170,112,240,86,300,110],'#A77450')+R(0,126,320,34,'#2B8FD0')+R(0,142,320,18,'#1B6FB5');
+      o+=R(240,118,32,10,'#FFFFFF')+D('M243 118 Q256 86 269 118Z','#FFFFFF')+R(255,80,2,10,'#FDC030')+C(256,78,3,'#FDC030');
+      o+=L('M0 22 L320 30','#444',1);
+      var fc=['#2E8BE6','#FFFFFF','#E4332E','#3FA34D','#FDC030'];
+      for(var i=0;i<14;i++){var x=10+i*22;o+=R(x,22+x/320*8,10,8,fc[i%5]);}
+      return o;};
+    S.goa=function(id){
+      var o=sky(id,'#FDA85F','#FFE9B0')+R(0,108,320,52,'#2BA3C9')+C(160,108,30,'#FFF1B8',0.95)+R(0,108,320,52,'#2BA3C9',0,0)+R(100,108,120,52,'#2BA3C9');
+      o+=L('M120 116 L200 116','#FFF1B8',2,0.8)+L('M132 124 L188 124','#FFF1B8',2,0.7)+L('M30 120 q8 -4 16 0 t16 0','#fff',1.5,0.7)+L('M240 130 q8 -4 16 0 t16 0','#fff',1.5,0.7);
+      o+=D('M0 160 L0 140 Q100 128 200 142 T320 136 L320 160Z','#F2D6A2');
+      o+=R(62,108,40,30,'#FFFFFF')+P('62,108 82,92 102,108','#FFFFFF')+R(102,98,12,40,'#FFFFFF')+P('102,98 108,88 114,98','#C25B3C')+R(76,122,12,16,'#C98F5C')+L('M82 92 L82 84 M79 87 L85 87','#C25B3C',1.5);
+      o+=palm(34,146,70)+palm(288,142,64);
+      return o;};
+    S.andaman=function(id){
+      var o=sky(id,'#7FD0F2','#DFF5FB')+C(66,34,14,'#FFE08A');
+      o+=R(0,92,320,68,'#19B5C9')+R(0,122,320,38,'#0E8FB8')+E(200,116,150,14,'#7BE3D8',0.8);
+      o+=D('M130 98 Q192 56 262 98Z','#2E8B57')+D('M118 100 Q195 90 272 100 L262 108 Q195 104 128 108Z','#F6E3B4');
+      o+=palm(186,100,38)+palm(224,102,32);
+      o+=P('44,130 90,130 82,140 54,140','#FFFFFF')+L('M66 130 L66 108','#6B4A2B',2)+P('66,108 66,128 88,128','#F58309');
+      o+=ripples(128,'#fff',6);
+      return o;};
+    S.pondy=function(id){
+      var o=sky(id,'#FDD9A0','#FFF1D6')+R(0,126,320,34,'#4FB6D8')+R(0,121,320,6,'#D9C9A5');
+      o+=R(60,70,150,52,'#F6C85F')+R(54,64,162,8,'#C25B3C');
+      for(var i=0;i<5;i++){o+=arch(72+i*28,122,18,26,'#FFFFFF');o+=R(76+i*28,78,10,14,'#9A5B2E',1);}
+      o+=R(231,92,3,32,'#333')+C(232.5,89,4.5,'#FDC030');
+      o+=C(36,110,17,'#E0457B')+C(52,118,12,'#F06292')+C(24,120,11,'#F06292')+C(260,112,15,'#E0457B')+C(276,120,11,'#F06292');
+      o+=ripples(132,'#fff',5);
+      return o;};
+    S.vizag=function(id){
+      var o=sky(id,'#9AD5F2','#E8F6FB')+R(0,100,320,60,'#2D9CCB')+R(0,126,320,34,'#1B7FB5');
+      o+=D('M0 104 Q50 54 120 72 T210 104Z','#3E8F4E');
+      o+=P('48,88 64,88 60,52 52,52','#FFFFFF')+R(52,60,8,4,'#E4332E')+R(51,70,10,4,'#E4332E')+R(50,46,10,6,'#333')+P('50,46 55,38 60,46','#E4332E');
+      o+=R(230,92,42,8,'#8C2F39')+R(240,84,16,8,'#FFFFFF')+R(246,78,4,6,'#E4332E');
+      o+=D('M0 160 L0 142 Q160 128 320 144 L320 160Z','#F2D6A2')+ripples(112,'#fff',5);
+      return o;};
+    S.rajasthan=function(id){
+      var o=sky(id,'#F9A66C','#FDE2A6')+C(256,52,22,'#FFF0B0');
+      o+=R(30,92,200,54,'#C97B4A');
+      for(var i=0;i<20;i++)o+=R(30+i*10,86,6,6,'#C97B4A');
+      o+=R(30,70,26,76,'#B96C3E')+R(204,70,26,76,'#B96C3E');
+      for(var j=0;j<3;j++){o+=R(30+j*9,64,6,6,'#B96C3E');o+=R(204+j*9,64,6,6,'#B96C3E');}
+      o+=R(36,62,14,8,'#D98A5B')+D('M34 62 Q43 46 52 62Z','#E7A26F')+R(210,62,14,8,'#D98A5B')+D('M208 62 Q217 46 226 62Z','#E7A26F');
+      o+=R(124,78,12,8,'#D98A5B')+D('M122 78 Q130 62 138 78Z','#E7A26F');
+      o+=arch(108,146,44,34,'#5A2E1A')+arch(70,146,18,20,'#7A3F22')+arch(170,146,18,20,'#7A3F22');
+      o+=D('M0 160 L0 152 Q160 140 320 152 L320 160Z','#E9C27D');
+      return o;};
+    S.taj=function(id){
+      var o=sky(id,'#9ED3F2','#FCE9D2');
+      o+=R(80,112,160,12,'#F4EFE6')+R(120,84,80,28,'#FFFFFF');
+      o+=dome(160,84,28,46,'#FFFFFF')+L('M160 40 L160 28','#FDC030',2)+C(160,26,2.4,'#FDC030');
+      o+=dome(114,90,10,20,'#FFFFFF')+dome(206,90,10,20,'#FFFFFF');
+      o+=arch(150,112,20,30,'#BFD0E8')+arch(126,112,12,18,'#D7E3F2')+arch(182,112,12,18,'#D7E3F2');
+      o+=R(86,58,8,54,'#F4EFE6')+dome(90,58,6,10,'#FFFFFF')+R(226,58,8,54,'#F4EFE6')+dome(230,58,6,10,'#FFFFFF');
+      o+=R(0,124,320,36,'#5FB8DA')+E(160,140,42,6,'#fff',0.5)+R(156,124,8,36,'#F4EFE6',0,0.5);
+      o+=C(34,120,17,'#2E7D32')+R(32,128,4,8,'#5A3A22')+C(288,120,17,'#2E7D32')+R(286,128,4,8,'#5A3A22');
+      return o;};
+    S.hampi=function(id){
+      var o=sky(id,'#FBD9A0','#FFF1D6')+C(270,38,16,'#FFE08A')+R(0,142,320,18,'#D8A86E');
+      o+=E(52,132,62,32,'#B07A52')+E(104,142,46,24,'#9A6A44')+E(268,134,70,34,'#B07A52')+E(214,146,40,20,'#9A6A44');
+      o+=R(135,100,50,42,'#C98F5C')+R(140,84,40,16,'#B67C4C')+R(146,70,28,14,'#C98F5C')+R(152,58,16,12,'#B67C4C')+dome(160,58,8,14,'#8C5A34')+C(160,42,2.6,'#FDC030');
+      o+=L('M135 112 L185 112','#8C5A34',1)+L('M135 124 L185 124','#8C5A34',1)+arch(152,142,16,26,'#4A2A18');
+      o+=E(110,146,40,16,'#B07A52')+E(40,150,36,14,'#9A6A44');
+      return o;};
+    S.mysuru=function(id){
+      var o=sky(id,'#9ED3F2','#FCE9D2');
+      o+=R(60,92,200,48,'#F2C46D')+R(140,60,40,80,'#F2C46D');
+      o+=dome(160,60,22,38,'#E2A93C')+R(159,16,2,10,'#8C5A34')+C(160,14,2.4,'#FDC030');
+      o+=dome(80,92,16,26,'#E2A93C')+dome(240,92,16,26,'#E2A93C')+dome(116,92,12,18,'#E2A93C')+dome(204,92,12,18,'#E2A93C');
+      for(var i=0;i<7;i++)o+=arch(70+i*25+(i>3?10:0),140,14,22,'#FFFFFF');
+      for(var j=0;j<30;j++)o+=C(60+j*6.7,92,1.4,'#FFF2B8');
+      o+=R(0,140,320,20,'#4C9A4A')+C(30,132,17,'#2E7D32')+C(292,132,17,'#2E7D32');
+      for(var k=0;k<8;k++)o+=C(90+k*18,152,2.4,k%2?'#F58309':'#E0457B');
+      return o;};
+    S.varanasi=function(id){
+      var o=sky(id,'#FDB16B','#FFE7B3')+C(252,72,26,'#FFF0B0');
+      o+=R(0,112,320,48,'#7BBBD1')+ripples(118,'#fff',6);
+      for(var i=0;i<5;i++)o+=R(0,92+i*12,100+i*25,12,i%2?'#E9C595':'#D9AE74');
+      o+=D('M20 92 L20 68 Q28 40 36 68 L36 92Z','#C97B4A')+D('M60 92 L60 76 Q66 58 72 76 L72 92Z','#B96C3E')+D('M92 92 L92 78 Q97 64 102 78 L102 92Z','#C97B4A')+C(28,38,2.4,'#FDC030');
+      o+=D('M200 134 Q235 148 272 134 L264 142 Q235 150 208 142Z','#8C4A2B')+R(222,122,26,12,'#F58309',3);
+      o+=C(180,152,3,'#FDC030')+C(196,156,3,'#FDC030')+C(290,150,3,'#FDC030')+C(150,150,3,'#FDC030');
+      return o;};
+    S.tirupati=function(id){
+      var o=sky(id,'#C9E8F6','#F2F7E8');
+      o+=mtn(100,[30,70,80,52,140,76,200,50,260,72,300,60],'#5FA36A')+mtn(122,[40,106,100,90,160,110,230,92,290,106],'#3F8A52');
+      o+=R(0,128,320,32,'#E9D9B0');
+      for(var i=0;i<6;i++)o+=R(118+i*6,128-(i+1)*13,84-i*12,13,i%2?'#C97B4A':'#E9B64F');
+      o+=R(157,40,6,12,'#C97B4A')+C(160,36,3.4,'#FDC030')+arch(150,128,20,30,'#4A2A18');
+      for(var j=0;j<5;j++)o+=L('M'+(124+j*6)+' '+(128-(j+1)*13)+' L'+(124+j*6)+' '+(128-j*13),'#8C5A34',1,0.7);
+      o+=R(60,120,40,8,'#C97B4A')+R(220,120,40,8,'#C97B4A');
+      return o;};
+    S.rishikesh=function(id){
+      var o=sky(id,'#B9E0F4','#F1F8F2');
+      o+=mtn(104,[40,70,100,50,170,74,240,48,300,70],'#4C9A5A')+mtn(120,[30,104,90,92,160,108,230,90,290,106],'#2F7D3F');
+      o+=R(0,118,320,42,'#5DB4C4')+L('M20 140 q8 -3 16 0 t16 0','#fff',1.6,0.7)+L('M230 148 q8 -3 16 0 t16 0','#fff',1.6,0.7)+L('M120 152 q8 -3 16 0 t16 0','#fff',1.6,0.6);
+      o+=R(70,76,6,52,'#555')+R(244,76,6,52,'#555')+R(70,108,180,3,'#444')+L('M73 80 Q160 122 247 80','#444',1.8);
+      for(var i=0;i<9;i++)o+=L('M'+(92+i*18)+' '+(100+Math.abs(4-i)*0.5)+' L'+(92+i*18)+' 108','#444',1);
+      o+=P('40,140 76,140 70,148 46,148','#F58309')+P('250,138 284,138 278,146 256,146','#1C6FD0');
+      return o;};
+    S.amritsar=function(id){
+      var o=sky(id,'#8EC8EE','#FCE2C2')+C(48,40,12,'#FFF0B0',0.9);
+      o+=R(110,92,100,28,'#F4EFE6')+R(122,70,76,22,'#E9B64F');
+      o+=dome(160,70,30,46,'#F2B531')+L('M160 24 L160 14','#E9B64F',2)+C(160,12,2.6,'#F2B531');
+      o+=dome(120,72,8,14,'#F2B531')+dome(200,72,8,14,'#F2B531')+dome(114,92,8,12,'#F2B531')+dome(206,92,8,12,'#F2B531');
+      for(var i=0;i<5;i++)o+=arch(124+i*14,120,8,14,'#B88A1E');
+      o+=R(0,120,320,40,'#4A9FD0')+R(110,124,100,26,'#E9B64F',0,0.35)+P('146,160 174,160 166,120 154,120','#F4EFE6');
+      o+=ripples(128,'#fff',5);
+      return o;};
+    S.kerala=function(id){
+      var o=sky(id,'#BDE6F2','#F7F2D8')+C(252,40,16,'#FFE08A');
+      o+=D('M0 100 Q100 88 200 98 T320 92 L320 112 L0 112Z','#4C9A4A')+R(0,108,320,52,'#4FB89D')+ripples(120,'#fff',7);
+      o+=palm(30,118,82)+palm(62,114,64)+palm(282,118,78)+palm(302,114,60);
+      o+=D('M95 136 L225 136 L215 148 L105 148Z','#8C4A2B')+R(110,118,100,18,'#F5E6C4')+D('M104 118 Q160 80 216 118Z','#C98F5C');
+      for(var i=0;i<6;i++)o+=L('M'+(118+i*17)+' 112 L'+(112+i*19)+' 118','#A9743F',1.2);
+      for(var j=0;j<4;j++)o+=R(122+j*22,124,12,8,'#7A4A2B',1);
+      o+=L('M160 92 L160 80','#6B4A2B',1.5)+P('160,80 160,88 172,84','#E4332E');
+      return o;};
+    S.kaziranga=function(id){
+      var o=sky(id,'#FDB77A','#FFE9B8')+C(240,88,28,'#FFF1B8');
+      o+=mtn(112,[60,92,120,72,200,96,260,80],'#8DB587',0.8)+E(160,102,170,10,'#fff',0.5);
+      o+=R(0,120,320,40,'#7DA33D');
+      for(var i=0;i<40;i++)o+=L('M'+(i*8+3)+' 160 L'+(i*8+3+(i%3-1)*4)+' '+(118+(i*7)%14),'#5D8A2A',1.6);
+      var g='#4A4A52';
+      o+=E(170,122,42,22,g)+D('M204 112 L240 124 L232 140 L204 138Z',g)+P('236,124 247,106 241,127','#2E2E34')+P('208,108 214,96 220,110',g);
+      o+=R(138,138,10,16,g)+R(152,140,10,14,g)+R(190,140,10,14,g)+R(204,138,10,16,g)+L('M129 118 Q119 124 121 136',g,2.4);
+      for(var j=0;j<40;j+=2)o+=L('M'+(j*8+3)+' 160 L'+(j*8+3+(j%3-1)*5)+' '+(132+(j*5)%16),'#5D8A2A',1.8);
+      return o;};
+
+    return function(key,idx,label){
+      var f=S[key]; if(!f) return '';
+      return '<svg viewBox="0 0 320 160" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustration of '+label+'" xmlns="http://www.w3.org/2000/svg">'+f('g'+idx)+'</svg>';
+    };
+  })();
+
+  /* India-wide destinations */
+  var DEST=[
+    {n:'Manali',a:'manali',pr:13500,desc:'Snow-capped valleys, pine forests and adventure in the Himalayan foothills.',img:'p-manali.jpg',alt:'Sunset over snow peaks and pine forest in the Himalayas',s:'Himachal Pradesh',c:'Hills',d:'5 Days 4 Nights',t:['Solang Valley','Old Manali','Rohtang Pass area']},
+    {n:'Darjeeling & Gangtok',a:'darjeeling',pr:17500,desc:'Tea gardens, the toy train and sunrise views over the Kanchenjunga range.',img:'p-darjeeling.jpg',alt:'Blue toy train on a green hillside in Darjeeling',s:'West Bengal & Sikkim',c:'Hills',d:'6 Days 5 Nights',t:['Tiger Hill sunrise','Tea gardens','Tsomgo Lake']},
+    {n:'Ooty',a:'ooty',pr:9500,desc:'Cool Nilgiri hills, tea estates and a quiet lakeside holiday.',img:'p-ooty.jpg',alt:'Lake among green tea hills under a blue sky',s:'Tamil Nadu',c:'Hills',d:'4 Days 3 Nights',t:['Tea gardens','Botanical Garden','Nilgiri toy train']},
+    {n:'Munnar',a:'munnar',pr:9900,desc:'Rolling tea estates, misty hills and easy nature walks.',img:'p-munnar.jpg',alt:'Woman standing among terraced tea fields with mist over the hills',s:'Kerala',c:'Hills',d:'4 Days 3 Nights',t:['Tea estates','Eravikulam National Park','Mattupetty Dam']},
+    {n:'Kashmir',a:'kashmir',pr:21500,desc:'Lakes, meadows and mountain views across the Kashmir valley.',img:'p-kashmir.jpg',alt:'River running through a rocky valley under a colourful sky',s:'Jammu & Kashmir',c:'Hills',d:'6 Days 5 Nights',t:['Dal Lake','Gulmarg','Pahalgam']},
+    {n:'Ladakh',a:'ladakh',pr:28500,desc:'High-altitude lakes, monasteries and dramatic mountain roads.',img:'p-ladakh.jpg',alt:'Dark mountains above a deep blue lake',s:'Ladakh',c:'Hills',d:'7 Days 6 Nights',t:['Leh','Pangong Lake','Nubra Valley']},
+    {n:'Goa',a:'goa',pr:8900,desc:'Sunset beaches, old churches and relaxed seaside evenings.',img:'p-goa.jpg',alt:'Sunset over the sea with thatched beach umbrellas',s:'Goa',c:'Beaches',d:'4 Days 3 Nights',t:['Baga & Calangute','Old Goa churches','Sunset cruise']},
+    {n:'Andaman Islands',a:'andaman',pr:26500,desc:'Clear water, white sand beaches and island hopping.',img:'p-andaman.jpg',alt:'Aerial view of small green islands in turquoise water',s:'Andaman & Nicobar',c:'Beaches',d:'6 Days 5 Nights',t:['Havelock Island','Radhanagar Beach','Cellular Jail']},
+    {n:'Puducherry',a:'pondy',pr:6500,desc:'French-style streets, a seaside promenade and calm beaches.',img:'p-pondy.jpg',alt:'Seaside promenade with colonial buildings and palm trees',s:'Puducherry',c:'Beaches',d:'3 Days 2 Nights',t:['French Quarter','Auroville','Promenade Beach']},
+    {n:'Visakhapatnam',a:'vizag',pr:5500,desc:'Beaches, a hilltop viewpoint and a lighthouse on the Bay of Bengal.',img:'p-vizag.jpg',alt:'Green hill beside a beach with the coast road and the sea',s:'Andhra Pradesh',c:'Beaches',d:'3 Days 2 Nights',t:['RK Beach','Kailasagiri','Submarine museum']},
+    {n:'Rajasthan Circuit',a:'rajasthan',pr:23500,desc:'Forts, palaces and lakes across Jaipur, Udaipur and Jodhpur.',img:'p-rajasthan.jpg',alt:'Fort walls glowing under a sunset sky',s:'Rajasthan',c:'Heritage',d:'7 Days 6 Nights',t:['Jaipur forts','Udaipur lakes','Jodhpur']},
+    {n:'Golden Triangle',a:'taj',pr:14900,desc:'Delhi, Agra and Jaipur in one trip, with the Taj Mahal at its heart.',img:'p-taj.jpg',alt:'Red sandstone building with white domes',s:'Delhi, Agra, Jaipur',c:'Heritage',d:'5 Days 4 Nights',t:['Taj Mahal','Red Fort','Amber Fort']},
+    {n:'Hampi',a:'hampi',pr:6200,desc:'Ruined temples and giant boulders from the Vijayanagara era.',img:'p-hampi.jpg',alt:'Ancient stone chariot and gateway at sunset',s:'Karnataka',c:'Heritage',d:'3 Days 2 Nights',t:['Virupaksha Temple','Vittala Temple','Boulder landscape']},
+    {n:'Mysuru',a:'mysuru',pr:6400,desc:'A royal palace, a hill temple and lit-up gardens.',img:'p-mysuru.jpg',alt:'Pillared hall inside Mysuru Palace',s:'Karnataka',c:'Heritage',d:'3 Days 2 Nights',t:['Mysore Palace','Chamundi Hills','Brindavan Gardens']},
+    {n:'Varanasi',a:'varanasi',pr:7200,desc:'Ganga aarti, ancient temples and boat rides at sunrise.',img:'p-varanasi.jpg',alt:'Evening aarti with lamps on the riverside steps',s:'Uttar Pradesh',c:'Spiritual',d:'3 Days 2 Nights',t:['Ganga Aarti','Kashi Vishwanath','Sarnath']},
+    {n:'Tirupati',a:'tirupati',pr:3800,desc:'A short temple trip to the Tirumala hills.',img:'p-tirupati.jpg',alt:'Forested hills and cliffs seen from above',s:'Andhra Pradesh',c:'Spiritual',d:'2 Days 1 Night',t:['Tirumala temple','Kapila Theertham','Srikalahasti']},
+    {n:'Rishikesh & Haridwar',a:'rishikesh',pr:9800,desc:'Ganga aarti, river rafting and the calm of the foothills.',img:'p-rishikesh.jpg',alt:'Suspension bridge over the Ganga with floating lamps at sunset',s:'Uttarakhand',c:'Spiritual',d:'4 Days 3 Nights',t:['Ganga Aarti','Laxman Jhula','River rafting']},
+    {n:'Amritsar',a:'amritsar',pr:4600,desc:'The Golden Temple and the Wagah border ceremony in one short trip.',img:'p-amritsar.jpg',alt:'Golden Temple across the water with lotus flowers',s:'Punjab',c:'Spiritual',d:'2 Days 1 Night',t:['Golden Temple','Wagah border','Jallianwala Bagh']},
+    {n:'Kerala Backwaters',a:'kerala',pr:12500,desc:'Houseboat days on quiet backwaters lined with coconut palms.',img:'p-kerala.jpg',alt:'Houseboat on a palm-lined backwater',s:'Kerala',c:'Nature',d:'4 Days 3 Nights',t:['Alleppey houseboat','Kumarakom','Village walks']},
+    {n:'Kaziranga',a:'kaziranga',pr:14500,desc:'Jeep safaris to spot one-horned rhinos in the grasslands of Assam.',img:'p-kaziranga.jpg',alt:'One-horned rhinoceros standing in tall grass beside the water',s:'Assam',c:'Nature',d:'4 Days 3 Nights',t:['Jeep safari','National park','Tea gardens']}
+  ];
+  var CATS=['All','Hills','Beaches','Heritage','Spiritual','Nature'], cur='All';
+  var destEl=document.getElementById('dest'), chipEl=document.getElementById('chips'), pkgSel=document.getElementById('pkg');
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+  function rs(n){return '₹'+Number(n).toLocaleString('en-IN');}
+  function label(d){return d.n+' ('+d.d+')';}
+  function renderDest(){
+    destEl.innerHTML=DEST.filter(function(d){return cur==='All'||d.c===cur;}).map(function(d){
+      return '<article class="card dest"><div class="art">'+(d.img?'<img src="'+d.img+'" width="800" height="400" loading="lazy" alt="'+esc(d.alt)+'">':ART(d.a,DEST.indexOf(d),d.n))+'</div><div class="top2"><span class="state">'+esc(d.s)+'</span><span class="days">'+esc(d.d)+'</span></div>'
+        +'<h3>'+esc(d.n)+'</h3><p class="desc">'+esc(d.desc)+'</p><div class="tags">'+d.t.map(function(x){return '<span>'+esc(x)+'</span>';}).join('')+'</div>'
+        +'<div class="foot"><div class="price"><small>From</small><b>'+rs(d.pr)+'</b><small>per person</small></div><button class="btn primary" type="button" data-dest="'+esc(label(d))+'">Enquire</button></div></article>';
+    }).join('');
+  }
+  function renderChips(){
+    chipEl.innerHTML=CATS.map(function(c){return '<button class="chip" type="button" data-cat="'+c+'" aria-pressed="'+(c===cur)+'">'+c+'</button>';}).join('');
+  }
+  DEST.forEach(function(d){var o=document.createElement('option');o.textContent=label(d);pkgSel.insertBefore(o,pkgSel.lastElementChild);});
+  renderChips(); renderDest();
+  document.addEventListener('click',function(e){
+    var ch=e.target.closest('[data-cat]');
+    if(ch){cur=ch.getAttribute('data-cat');renderChips();renderDest();return;}
+    var de=e.target.closest('[data-dest]');
+    if(de){
+      var want=de.getAttribute('data-dest');
+      for(var i=0;i<pkgSel.options.length;i++){if(pkgSel.options[i].text===want)pkgSel.selectedIndex=i;}
+      show('book');updateWA();
+    }
+  });
+  document.getElementById('bookform').addEventListener('submit',function(e){e.preventDefault();});
+  document.getElementById('bookform').addEventListener('input',updateWA);
+  document.getElementById('bookform').addEventListener('change',updateWA);
+  updateWA();
+  var h=(location.hash||'').replace('#','');
+  show(views.indexOf(h)>=0?h:'home');
+})();
+</script>
+
+</body></html>
